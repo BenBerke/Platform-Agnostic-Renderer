@@ -13,15 +13,12 @@ struct InputManager {
 
 static struct InputManager im = {0};
 
-void im_update() {
-    memset(im.keys, 0, sizeof(im.keys));
-}
-
 BOOL im_get_key(const enum KEYCODES keycode) {
     return im.keys[keycode];
 }
 
 LRESULT CALLBACK WindowProc(const HWND hWnd, const UINT uMsg, const WPARAM wParam, const LPARAM lParam) {
+    char wKey;
     switch (uMsg) {
         case WM_MOUSEMOVE:
             if (wParam & MK_LBUTTON) {
@@ -29,15 +26,20 @@ LRESULT CALLBACK WindowProc(const HWND hWnd, const UINT uMsg, const WPARAM wPara
                 int y = HIWORD(lParam);
             }
             break;
-        case WM_LBUTTONDOWN:
+        case WM_LBUTTONDOWN: {
             int x = LOWORD(lParam);
             int y = HIWORD(lParam);
             break;
-        case WM_KEYDOWN:
-            const char wKey = (char)wParam;
+        }
+        case WM_KEYDOWN: {
+            wKey = (unsigned char)wParam;
             if (wKey >= 0 && wKey < 256) im.keys[wKey] = TRUE;
-            print("a key is pressed");
             break;
+            case WM_KEYUP:
+            wKey = (unsigned char)wParam;
+            if (wKey >= 0 && wKey < 256) im.keys[wKey] = FALSE;
+            break;
+        }
         case WM_DESTROY:
             PostQuitMessage(0);
             break;

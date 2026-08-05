@@ -3,6 +3,7 @@
 #include "headers/inputManager.h"
 #include "headers/debug.h"
 
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     const wchar_t CLASS_NAME[] = L"WindowClass";
 
@@ -42,10 +43,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-
-        im_update();
-        print("hello among us %d %d \n", 14981, 777);
-        if (im_get_key(KC_A)) print("A presseed");
+        if (im_get_key(KC_A)) print("A presseed \n");
     }
 
     return (int)msg.wParam;

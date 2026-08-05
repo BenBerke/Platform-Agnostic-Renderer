@@ -7,7 +7,6 @@
 
 #include "../globals.h"
 
-void im_update();
 BOOL im_get_key(enum KEYCODES keycode);
 
 #endif //MINIFB_INPUTMANAGER_H
