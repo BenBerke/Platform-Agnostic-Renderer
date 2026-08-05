@@ -12,4 +12,5 @@ add_executable(MiniFB main.c
         src/math/Vector2.c
         src/math/Matrix3.c
         headers/math/Matrix3.h
-        headers/math/Vector2.h)
+        headers/math/Vector2.h
+        src/game.c)

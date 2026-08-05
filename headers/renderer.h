@@ -47,7 +47,7 @@ enum KEY_CODES {
 };
 
 void r_init();
-void r_loop();
+void r_update();
 void r_destroy();
 
 static inline uint32_t r_rgb_to_i32(const char r, const char g, const char b) {
