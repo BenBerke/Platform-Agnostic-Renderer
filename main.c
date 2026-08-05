@@ -1,59 +1,7 @@
-#define UNICODE
-#define _UNICODE
-#include <windows.h>
-
-#define W 800
-#define H 600
-
-static DWORD buffer[W * H];
-
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    switch (uMsg) {
-        case WM_MOUSEMOVE:
-            if (wParam & MK_LBUTTON) {
-                int x = LOWORD(lParam);
-                int y = HIWORD(lParam);
-            }
-            break;
-        case WM_LBUTTONDOWN:
-            int x = LOWORD(lParam);
-            int y = HIWORD(lParam);
-            break;
-        case WM_KEYDOWN:
-            if (wParam == VK_ESCAPE) {
-                DestroyWindow(hwnd);
-            }
-            break;
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            break;
-
-        case WM_PAINT:
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hwnd, &ps);
-
-            BITMAPINFO bmi = {};
-            bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-            bmi.bmiHeader.biWidth = W;
-            bmi.bmiHeader.biHeight = -H;
-            bmi.bmiHeader.biPlanes = 1;
-            bmi.bmiHeader.biBitCount = 32;
-            bmi.bmiHeader.biCompression = BI_RGB;
-
-            StretchDIBits(
-                hdc,
-                0, 0, W, H,
-                0, 0, W, H,
-                buffer, &bmi,
-                DIB_RGB_COLORS, SRCCOPY
-            );
-
-            EndPaint(hwnd, &ps);
-            break;
-    }
-
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
+#include "app.h"
+#include "globals.h"
+#include "headers/inputManager.h"
+#include "headers/debug.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     const wchar_t CLASS_NAME[] = L"WindowClass";
@@ -67,7 +15,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     if (!RegisterClassEx(&wc)) return 0;
 
-    RECT rc = {0, 0, W, H};
+    RECT rc = {0, 0, W_W, W_H};
 
     AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
@@ -81,13 +29,23 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     if (hwnd == NULL) return 0;
 
+    memset(screen_buffer, ~0, sizeof(screen_buffer));
+
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
     MSG msg = {0};
-    while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+    BOOL running = TRUE;
+    while (running) {
+        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+            if (msg.message == WM_QUIT) running = FALSE;
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+
+        im_update();
+        print("hello among us %d %d \n", 14981, 777);
+        if (im_get_key(KC_A)) print("A presseed");
     }
 
     return (int)msg.wParam;
