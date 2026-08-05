@@ -2,7 +2,7 @@
 // Created by berke on 8/5/2026.
 //
 
-#include "../headers/inputManager.h"
+#include "../headers/input_manager.h"
 #include "../app.h"
 #include "../globals.h"
 #include "../headers/debug.h"
@@ -18,41 +18,37 @@ void im_begin() {
     CopyMemory(IM_LAST_KEYS_PTR, IM_KEYS_PTR, sizeof(bool) * IM_KEY_COUNT);
 }
 
-bool im_get_key(const enum KEYCODES keycode) {
-    return (IM_CURRENT);
-}
-bool im_get_key_down(const enum KEYCODES keycode) {
-    return (IM_CURRENT) && !(IM_PREVIOUS);
-}
-bool im_get_key_up(const enum KEYCODES keycode) {
-    return !(IM_CURRENT) && (IM_PREVIOUS);
-}
+bool im_key_get(const enum KEYCODES keycode) { return (IM_CURRENT);}
+bool im_key_get_down(const enum KEYCODES keycode) {return (IM_CURRENT) && !(IM_PREVIOUS);}
+bool im_key_get_up(const enum KEYCODES keycode) {return !(IM_CURRENT) && (IM_PREVIOUS);}
+
+unsigned int im_mouse_pos_x() { return *(unsigned int*)(IM_MOUSE_POS_PTR);}
+unsigned int im_mouse_pos_y() { return *(unsigned int*)(IM_MOUSE_POS_PTR + sizeof(unsigned int)); }
 
 LRESULT CALLBACK WindowProc(const HWND hWnd, const UINT uMsg, const WPARAM wParam, const LPARAM lParam) {
     unsigned char wKey;
 
     switch (uMsg) {
         case WM_MOUSEMOVE:
-            if (wParam & MK_LBUTTON) {
-                int x = LOWORD(lParam);
-                int y = HIWORD(lParam);
-            }
+            *(unsigned int*)(IM_MOUSE_POS_PTR) = (unsigned int)LOWORD(lParam);
+            *(unsigned int*)(IM_MOUSE_POS_PTR + sizeof(unsigned int)) = (unsigned int)HIWORD(lParam);
             break;
         case WM_LBUTTONDOWN: {
-            int x = LOWORD(lParam);
-            int y = HIWORD(lParam);
+            unsigned int x = LOWORD(lParam);
+            unsigned int y = HIWORD(lParam);
+
             break;
         }
         case WM_KEYDOWN: {
             if (im_memory == NULL) break;
             wKey = (unsigned char) wParam;
-            if (wKey < 256) *(im_memory + wKey) = true;
+            if (wKey < 256) *(IM_KEYS_PTR + wKey) = true;
             break;
         }
         case WM_KEYUP: {
             if (im_memory == NULL) break;
             wKey = (unsigned char) wParam;
-            if (wKey < 256) *(im_memory + wKey) = false;
+            if (wKey < 256) *(IM_KEYS_PTR + wKey) = false;
             break;
         }
 

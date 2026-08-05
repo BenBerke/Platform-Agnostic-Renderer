@@ -5,6 +5,6 @@
 #ifndef MINIFB_DEBUG_H
 #define MINIFB_DEBUG_H
 
-void print(const char* text, ...);
+void generic_print(const char* text, ...);
 
 #endif //MINIFB_DEBUG_H

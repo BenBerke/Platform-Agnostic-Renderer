@@ -5,7 +5,7 @@
 #include "../app.h"
 #include "../headers/debug.h"
 
-void print(const char* text, ...) {
+void generic_print(const char* text, ...) {
     va_list args;
     va_start(args, text);
 
@@ -18,6 +18,7 @@ void print(const char* text, ...) {
         if (text[i] == '%') {
             i++; // Advance past %
             if (text[i] == 'd') {
+                // Read the int as a string
                 char num_buffer[33];
                 itoa(va_arg(args, int), num_buffer, 10);
 
@@ -33,8 +34,10 @@ void print(const char* text, ...) {
 
     va_end(args);
 
+#ifdef _WIN32
     const HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD bytesWritten;
 
     WriteFile(hStdOut, buffer, (DWORD)buffer_stack, &bytesWritten, NULL);
+#endif
 }

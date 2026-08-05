@@ -6,7 +6,3 @@
 #include "../globals.h"
 
 DWORD screen_buffer[W_H * W_W];
-
-APP_INFO app_info = {
-    .x = 10
-};

@@ -1,9 +1,10 @@
 //
 // Created by berke on 8/5/2026.
 //
-
 #ifndef MINIFB_CONFIG_H
 #define MINIFB_CONFIG_H
+
+// Holds information that is generally required by majority of the files
 
 #include "app.h"
 
