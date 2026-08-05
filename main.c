@@ -1,19 +1,17 @@
 #include "headers/renderer.h"
 
+uint32_t r_buffer[W * H];
+int keys[256];
+struct fenster r_f = {
+    .title = "Hello World",
+    .width = W,
+    .height = H,
+    .buf = r_buffer
+};
+
 int main() {
     r_init();
-
-    uint32_t t = 0;
-    int64_t now = fenster_time();
-
-    while (fenster_loop(&f) == 0) {
-        r_clear_screen((char)255, (char)255, (char)255);
-
-        int64_t time = fenster_time();
-        if (time - now < 1000 / 60) fenster_sleep(time - now);
-        now = time;
-    }
-
-    fenster_close(&f);
+    r_loop();
+    r_destroy();
     return 0;
 }

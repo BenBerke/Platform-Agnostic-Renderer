@@ -2,7 +2,7 @@
 // Created by berke on 3/11/2026.
 //
 
-#include "../Headers/Vector2.h"
+#include "../../headers/math/Vector2.h"
 
 static inline float vector2_length_squared_simd(const __m128 vector) {
     const __m128 squared = _mm_mul_ps(vector, vector);

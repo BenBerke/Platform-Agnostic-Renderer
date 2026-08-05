@@ -4,21 +4,29 @@
 
 #include "../headers/renderer.h"
 
-inline void r_init() {
-    fenster_open(&f);
+#include <stdio.h>
+
+void r_init() {
+    fenster_open(&r_f);
 }
 
-inline uint32_t r_rgb_to_i32(const char r, const char b, const char g) {
-    uint32_t value = 0;
-    value |= r << 16; value |= g << 8; value |= b;
-    return value;
+void r_loop() {
+    uint32_t t = 0;
+    int64_t now = fenster_time();
+
+    while (fenster_loop(&r_f) == 0) {
+        for (int i = 0; i < 256; i++) {
+            if (r_f.keys[i]) {
+                if (i == 'A') printf("A pressed");
+            }
+        }
+
+        r_clear_screen((char)255, (char)255, (char)255);
+
+        const int64_t time = fenster_time();
+        if (time - now < 1000 / 60) fenster_sleep(time - now);
+        now = time;
+    }
 }
 
-inline void r_clear_screen(const char r, const char g, const char b) {
-    const uint32_t color = r_rgb_to_i32(r, g, b);
-    memset(buffer, (int)color, W * H * sizeof(uint32_t));
-}
-inline void r_set_pixel(const int x, const int y, const char r, const char g, const char b) {
-    const uint32_t color = r_rgb_to_i32(r, g, b);
-    buffer[(x+1) * (y+1) - 1] = color;
-}
+void r_destroy() { fenster_close(&r_f); }

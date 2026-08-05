@@ -2,7 +2,7 @@
 // Created by berke on 5/20/2026.
 //
 
-#include "../Headers/Matrix3.h"
+#include "../../headers/math/Matrix3.h"
 
 static inline __m128 splat_x(const __m128 value) {
     return _mm_shuffle_ps(value, value, _MM_SHUFFLE(0, 0, 0, 0));

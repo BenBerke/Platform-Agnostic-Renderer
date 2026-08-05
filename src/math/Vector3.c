@@ -2,7 +2,7 @@
 // Created by berke on 5/20/2026.
 //
 
-#include "../Headers/Vector3.h"
+#include "../../headers/math/Vector3.h"
 
 #include <math.h>
 
