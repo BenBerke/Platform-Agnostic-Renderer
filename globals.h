@@ -10,7 +10,13 @@
 #define W_W 960
 #define W_H 960
 
+#define bool char
+#define true 1
+#define false 0
+
 extern DWORD screen_buffer[W_W * W_H];
+
+#define SB_SIZE sizeof(screen_buffer)
 
 enum KEYCODES {
     KC_A = 'A',

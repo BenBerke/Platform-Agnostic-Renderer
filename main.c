@@ -30,20 +30,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     if (hwnd == NULL) return 0;
 
-    memset(screen_buffer, ~0, sizeof(screen_buffer));
+    //todo renderer
+    FillMemory(screen_buffer, SB_SIZE, ~0);
 
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
+    im_init(); // If this is not included, it crashes
+
     MSG msg = {0};
     BOOL running = TRUE;
     while (running) {
+        im_begin();
+
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) running = FALSE;
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-        if (im_get_key(KC_A)) print("A presseed \n");
+
+        if (im_get_key_up(KC_A)) print("A presseed \n");
     }
 
     return (int)msg.wParam;

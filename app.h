@@ -7,11 +7,6 @@
 
 #define UNICODE
 #define _UNICODE
-
-#define BOOL char
-#define TRUE 1
-#define FALSE 0
-
 #include <windows.h>
 
 typedef struct APP_INFO {
