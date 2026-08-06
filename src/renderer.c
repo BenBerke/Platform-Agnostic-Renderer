@@ -89,3 +89,33 @@ void r_g_update_window() {
     r_update_window_win();
 #endif
 }
+
+// ==============
+// Draw Functions
+// ==============
+void r_draw_line(int x, int y, const int x1, const int y1) {
+    const int dx = abs(x - x1);
+    const int dy = abs(y - y1);
+
+    const char sx = (x < x1) ? 1 : -1;
+    const char sy = (y < y1) ? 1 : -1;
+
+    int err = dx - dy;
+
+    for (;;) {
+        r_set_pixel(x, y);
+
+        if (x == x1 && y == y1) break;
+
+        const int e2 = err * 2;
+
+        if (e2 > -dy) {
+            err -= dy;
+            x += sx;
+        }
+        if (e2 < dx) {
+            err += dx;
+            y += sy;
+        }
+    }
+}

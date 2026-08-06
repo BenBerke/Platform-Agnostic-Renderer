@@ -7,16 +7,30 @@
 
 #include "../globals.h"
 
+static unsigned int draw_color;
+
 // r at the highest 8, b at the lowest 8
 static inline unsigned int rgb_to_int(const unsigned char r, const unsigned char g, const unsigned char b) {return (r << 16) | (g << 8) | b;}
+
+static inline void int_to_rgb(const unsigned int i, unsigned char* r, unsigned char* g, unsigned char* b) {
+    *r = (i & 0x00FF0000) >> 16;
+    *g = (i & 0x0000FF00) >> 8;
+    *b = (i & 0x000000FF);
+}
+static inline void r_set_draw_color(const unsigned char r, const unsigned char g, const unsigned char b) {
+    draw_color = rgb_to_int(r, g, b);
+}
+static inline void r_set_draw_color_int(const unsigned int color) {
+    draw_color = color;
+}
 
 void r_g_init_window(int w, int h, const char* title);
 bool r_g_poll_events();
 void r_g_update_window();
 
-static inline void r_clear_window(const unsigned char r, const unsigned char g, const unsigned char b) {
+static inline void r_clear_window() {
 #ifdef _WIN32
-    __stosd((unsigned long*)screen_buffer, rgb_to_int(r, g, b), W_PIXEL_COUNT);
+    __stosd((unsigned long*)screen_buffer, draw_color, W_PIXEL_COUNT);
 #endif
 
 }
@@ -24,10 +38,11 @@ static inline void r_clear_window(const unsigned char r, const unsigned char g, 
 // ==============
 // Draw Functions
 // ==============
-static inline void r_set_pixel(const unsigned int x, const unsigned int y, const char r, const char g, const char b) {
-    screen_buffer[x * y * W_W] = r;
+static inline void r_set_pixel(const unsigned int x, const unsigned int y) {
+    if (x < 0 || x > W_W || y < 0 || y > W_H) return;
+    screen_buffer[x + y * W_W] = draw_color;
 }
 
-void r_draw_line(unsigned int x, unsigned int y, unsigned int x2, unsigned int y2, const char r, const char g, const char b);
+void r_draw_line(int x, int y, int x1, int y1);
 
 #endif //MINIFB_RENDERER_H

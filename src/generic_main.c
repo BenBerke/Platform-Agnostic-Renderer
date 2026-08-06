@@ -18,7 +18,11 @@ void generic_main() {
 
         if (im_key_get(KC_A)) r++;
 
-        r_clear_window(r, im_mouse_pos_x(), im_mouse_pos_y());
+        r_set_draw_color(255, 255, 255);
+        r_clear_window();
+
+        r_set_draw_color(0, 0, 0);
+        r_draw_line(10, 10, 500, 850);
 
         r_g_update_window();
     }
