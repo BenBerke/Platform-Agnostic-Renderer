@@ -43,7 +43,6 @@ int r_init_win(const int w, const int h, const char* title) {
 
     if (hwnd == NULL) return 0;
 
-    //todo renderer
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
 }
@@ -74,18 +73,18 @@ bool r_update_window_win() {
 
 #endif
 
-bool r_generic_poll_events() {
+bool r_g_poll_events() {
 #ifdef _WIN32
     return r_poll_events_win();
 #endif
 }
 
-void r_generic_init_window(const int w, const int h, const char* title) {
+void r_g_init_window(const int w, const int h, const char* title) {
 #ifdef _WIN32
 r_init_win(w, h, title);
 #endif
 }
-void r_generic_update_window() {
+void r_g_update_window() {
 #ifdef _WIN32
     r_update_window_win();
 #endif

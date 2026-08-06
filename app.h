@@ -12,8 +12,8 @@
 #include <windows.h>
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-void generic_main();
-
 #endif
+
+void generic_main();
 
 #endif //MINIFB_APP_H

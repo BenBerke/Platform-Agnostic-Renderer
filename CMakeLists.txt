@@ -15,4 +15,5 @@ add_executable(MiniFB main.c
         src/renderer.c
         src/generic_main.c
         headers/mmu.h
+        src/mmu.c
 )

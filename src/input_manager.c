@@ -6,16 +6,17 @@
 #include "../app.h"
 #include "../globals.h"
 #include "../headers/debug.h"
+#include "../headers/mmu.h"
 
 static bool* im_memory = NULL;
 
 void im_init() {  //                                       mouse x, y
     SIZE_T total_size = sizeof(bool) * (IM_KEY_COUNT * 2) + 8;
 
-    im_memory = (bool*)VirtualAlloc(NULL, total_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    im_memory = g_malloc(total_size);
 }
 void im_begin() {
-    CopyMemory(IM_LAST_KEYS_PTR, IM_KEYS_PTR, sizeof(bool) * IM_KEY_COUNT);
+    g_copy_memory(IM_LAST_KEYS_PTR, IM_KEYS_PTR, sizeof(bool) * IM_KEY_COUNT);
 }
 
 bool im_key_get(const enum KEYCODES keycode) { return (IM_CURRENT);}
@@ -25,6 +26,7 @@ bool im_key_get_up(const enum KEYCODES keycode) {return !(IM_CURRENT) && (IM_PRE
 unsigned int im_mouse_pos_x() { return *(unsigned int*)(IM_MOUSE_POS_PTR);}
 unsigned int im_mouse_pos_y() { return *(unsigned int*)(IM_MOUSE_POS_PTR + sizeof(unsigned int)); }
 
+#ifdef _WIN32
 LRESULT CALLBACK WindowProc(const HWND hWnd, const UINT uMsg, const WPARAM wParam, const LPARAM lParam) {
     unsigned char wKey;
 
@@ -83,3 +85,4 @@ LRESULT CALLBACK WindowProc(const HWND hWnd, const UINT uMsg, const WPARAM wPara
 
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
+#endif
