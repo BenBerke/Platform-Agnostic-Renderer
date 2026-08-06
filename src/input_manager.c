@@ -9,8 +9,8 @@
 
 static bool* im_memory = NULL;
 
-void im_init() {
-    SIZE_T total_size = sizeof(bool) * (IM_KEY_COUNT * 2);
+void im_init() {  //                                       mouse x, y
+    SIZE_T total_size = sizeof(bool) * (IM_KEY_COUNT * 2) + 8;
 
     im_memory = (bool*)VirtualAlloc(NULL, total_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 }

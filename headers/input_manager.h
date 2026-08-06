@@ -10,10 +10,10 @@
 #define IM_KEY_COUNT 256
 #define IM_KEYS_PTR (im_memory)
 #define IM_LAST_KEYS_PTR (im_memory + IM_KEY_COUNT)
-#define IM_MOUSE_POS_PTR (IM_LAST_KEYS_PTR + IM_KEY_COUNT)
+#define IM_MOUSE_POS_PTR (im_memory + (IM_KEY_COUNT * 2))
 
-#define IM_CURRENT *(IM_KEYS_PTR + keycode)
-#define IM_PREVIOUS *(IM_LAST_KEYS_PTR + keycode)
+#define IM_CURRENT (IM_KEYS_PTR[keycode])
+#define IM_PREVIOUS (IM_LAST_KEYS_PTR[keycode])
 
 void im_init();
 void im_begin();

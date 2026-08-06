@@ -5,11 +5,14 @@
 #include "../headers/renderer.h"
 
 #include "../globals.h"
-#include "../headers/input_manager.h"
-#include "../headers/debug.h"
 
 #ifdef _WIN32
-int WINAPI r_init_win(const int w, const int h, const char* title) {
+BOOL CALLBACK GetThreadWindowsCallBack(HWND hwnd, LPARAM lParam) {
+    *(HWND*)lParam = hwnd;
+    return FALSE;
+}
+
+int r_init_win(const int w, const int h, const char* title) {
     // Fetch HINSTANCE automatically
     HINSTANCE hInstance = GetModuleHandle(NULL);
 
@@ -41,34 +44,49 @@ int WINAPI r_init_win(const int w, const int h, const char* title) {
     if (hwnd == NULL) return 0;
 
     //todo renderer
-    FillMemory(screen_buffer, SB_SIZE, ~0);
-
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
+}
 
-    im_init();
+bool r_poll_events_win() {
+    MSG msg;
 
-    MSG msg = {0};
-    BOOL running = TRUE;
-    while (running) {
-        im_begin();
+    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+        if (msg.message == WM_QUIT) return 0;
 
-        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_QUIT) running = FALSE;
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-
-
-        if (im_key_get_up(KC_A)) generic_print("A presseed \n");
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
     }
 
-    return (int)msg.wParam;
+    return true;
 }
+
+bool r_update_window_win() {
+    HWND hwnd = NULL;
+
+    EnumThreadWindows(GetCurrentThreadId(), GetThreadWindowsCallBack, (LPARAM)&hwnd);
+    if (hwnd != NULL) {
+        ShowWindow(hwnd, SW_SHOW);
+        InvalidateRect(hwnd, NULL, FALSE);
+        UpdateWindow(hwnd);
+    }
+}
+
 #endif
+
+bool r_generic_poll_events() {
+#ifdef _WIN32
+    return r_poll_events_win();
+#endif
+}
 
 void r_generic_init_window(const int w, const int h, const char* title) {
 #ifdef _WIN32
 r_init_win(w, h, title);
+#endif
+}
+void r_generic_update_window() {
+#ifdef _WIN32
+    r_update_window_win();
 #endif
 }

@@ -11,6 +11,8 @@
 #define W_W 960
 #define W_H 960
 
+#define W_PIXEL_COUNT (W_W * W_H)
+
 #define bool char
 #define true 1
 #define false 0
