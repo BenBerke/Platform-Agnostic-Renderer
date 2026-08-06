@@ -5,6 +5,7 @@
 #include "../headers/renderer.h"
 
 #include "../globals.h"
+#include "../headers/mmu.h"
 
 #ifdef _WIN32
 BOOL CALLBACK GetThreadWindowsCallBack(HWND hwnd, LPARAM lParam) {
@@ -45,6 +46,8 @@ int r_init_win(const int w, const int h, const char* title) {
 
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
+
+    return 1;
 }
 
 bool r_poll_events_win() {
@@ -68,7 +71,11 @@ bool r_update_window_win() {
         ShowWindow(hwnd, SW_SHOW);
         InvalidateRect(hwnd, NULL, FALSE);
         UpdateWindow(hwnd);
+
+        return true;
     }
+
+    return false;
 }
 
 #endif
@@ -117,5 +124,23 @@ void r_draw_line(int x, int y, const int x1, const int y1) {
             err += dx;
             y += sy;
         }
+    }
+}
+
+void r_draw_horizontal_line(const int x, const int x1, int y) {
+    const int start_x = MIN(MAX((x < x1) ? x : x1, 0), W_W);
+    const int end_x = MIN(MAX((x < x1) ? x1 : x, 0), W_W);
+    const int length = end_x - start_x;
+
+    if (y < 0 || y > W_H) return;
+
+#ifdef _WIN32
+    __stosd((unsigned long*)(screen_buffer + cord_to_index(start_x, y)), draw_color, length);
+#endif
+}
+
+void r_draw_fill_rect(const int x, const int y, const int w, const int h) {
+    for (int i = y; i < y + h; i++) {
+        r_draw_horizontal_line(x, x+w, i);
     }
 }

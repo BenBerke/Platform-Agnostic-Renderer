@@ -16,7 +16,7 @@ void im_init() {  //                                       mouse x, y
     im_memory = g_malloc(total_size);
 }
 void im_begin() {
-    g_copy_memory(IM_LAST_KEYS_PTR, IM_KEYS_PTR, sizeof(bool) * IM_KEY_COUNT);
+    g_copy_mem(IM_LAST_KEYS_PTR, IM_KEYS_PTR, sizeof(bool) * IM_KEY_COUNT);
 }
 
 bool im_key_get(const enum KEYCODES keycode) { return (IM_CURRENT);}

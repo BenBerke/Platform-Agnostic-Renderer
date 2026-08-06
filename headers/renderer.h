@@ -7,20 +7,22 @@
 
 #include "../globals.h"
 
-static unsigned int draw_color;
+static int draw_color;
 
 // r at the highest 8, b at the lowest 8
-static inline unsigned int rgb_to_int(const unsigned char r, const unsigned char g, const unsigned char b) {return (r << 16) | (g << 8) | b;}
+static inline int rgb_to_int(const unsigned char r, const unsigned char g, const unsigned char b) {return (r << 16) | (g << 8) | b;}
 
 static inline void int_to_rgb(const unsigned int i, unsigned char* r, unsigned char* g, unsigned char* b) {
     *r = (i & 0x00FF0000) >> 16;
     *g = (i & 0x0000FF00) >> 8;
     *b = (i & 0x000000FF);
 }
+static inline int cord_to_index(const int x, const int y) {return x + y * W_W;}
+
 static inline void r_set_draw_color(const unsigned char r, const unsigned char g, const unsigned char b) {
     draw_color = rgb_to_int(r, g, b);
 }
-static inline void r_set_draw_color_int(const unsigned int color) {
+static inline void r_set_draw_color_int(const int color) {
     draw_color = color;
 }
 
@@ -38,11 +40,13 @@ static inline void r_clear_window() {
 // ==============
 // Draw Functions
 // ==============
-static inline void r_set_pixel(const unsigned int x, const unsigned int y) {
+static inline void r_set_pixel(const int x, const int y) {
     if (x < 0 || x > W_W || y < 0 || y > W_H) return;
-    screen_buffer[x + y * W_W] = draw_color;
+    screen_buffer[cord_to_index(x, y)] = draw_color;
 }
 
 void r_draw_line(int x, int y, int x1, int y1);
+void r_draw_horizontal_line(int x, int x1, int y);
+void r_draw_fill_rect(int x, int y, int w, int h);
 
 #endif //MINIFB_RENDERER_H

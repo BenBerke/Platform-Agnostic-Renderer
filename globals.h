@@ -17,6 +17,9 @@
 #define true 1
 #define false 0
 
+#define MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define MAX(a,b) (((a) > (b)) ? (a) : (b))
+
 extern DWORD screen_buffer[W_W * W_H];
 
 #define SB_SIZE sizeof(screen_buffer)

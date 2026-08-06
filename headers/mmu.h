@@ -17,9 +17,15 @@ static inline void* g_malloc_raw(unsigned long long size) {
 #endif
 }
 
-static inline void g_copy_memory(void *dst, void *src, unsigned long long size) {
+static inline void g_copy_mem(void *dst, void *src, unsigned long long size) {
 #ifdef _WIN32
     CopyMemory(dst, src, size);
+#endif
+}
+
+static inline void g_memset(void *dst, int const val, const unsigned long long size) {
+#ifdef _WIN32
+    FillMemory(dst, val, size);
 #endif
 }
 
