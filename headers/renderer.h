@@ -48,5 +48,6 @@ static inline void r_set_pixel(const int x, const int y) {
 void r_draw_line(int x, int y, int x1, int y1);
 void r_draw_horizontal_line(int x, int x1, int y);
 void r_draw_fill_rect(int x, int y, int w, int h);
+void r_draw_fill_circle(int x, int y, int half_r);
 
 #endif //MINIFB_RENDERER_H

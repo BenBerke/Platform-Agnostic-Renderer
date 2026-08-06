@@ -5,6 +5,7 @@
 #include "../headers/renderer.h"
 
 #include "../globals.h"
+#include "../headers/math.h"
 #include "../headers/mmu.h"
 
 #ifdef _WIN32
@@ -140,7 +141,16 @@ void r_draw_horizontal_line(const int x, const int x1, int y) {
 }
 
 void r_draw_fill_rect(const int x, const int y, const int w, const int h) {
-    for (int i = y; i < y + h; i++) {
-        r_draw_horizontal_line(x, x+w, i);
-    }
+    for (int i = y; i < y + h; i++) r_draw_horizontal_line(x, x+w, i);
+}
+
+void r_draw_fill_circle(const int x, const int y, const int half_r) {
+    const int left_x = x-half_r;
+    const int right_x = x + half_r;
+    const int top_y = y-half_r;
+    const int bottom_y = y + half_r;
+
+    for (int i = left_x; i <= right_x; i++)
+        for (int j = top_y; j <= bottom_y; j++)
+            if (distance_sqr(i, j, x, y) < half_r*half_r) r_set_pixel(i, j);
 }

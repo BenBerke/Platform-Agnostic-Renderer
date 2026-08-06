@@ -26,7 +26,7 @@ void generic_main() {
         r_clear_window();
 
         r_set_draw_color(0, 0, 0);
-        r_draw_fill_rect(x, y, w, h);
+        r_draw_fill_circle(x, y, w);
 
         r_g_update_window();
     }
