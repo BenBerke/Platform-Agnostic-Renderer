@@ -64,6 +64,7 @@ enum KEYCODES {
     KC_9 = '9',
 
     KC_ESC = 27,
+    KC_SPACE = ' ',
 };
 
 #endif //MINIFB_CONFIG_H

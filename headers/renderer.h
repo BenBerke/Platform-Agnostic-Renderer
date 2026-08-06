@@ -41,7 +41,7 @@ static inline void r_clear_window() {
 // Draw Functions
 // ==============
 static inline void r_set_pixel(const int x, const int y) {
-    if (x < 0 || x > W_W || y < 0 || y > W_H) return;
+    if (x < 0 || x >= W_W || y < 0 || y >= W_H) return;
     screen_buffer[cord_to_index(x, y)] = draw_color;
 }
 

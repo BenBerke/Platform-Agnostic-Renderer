@@ -18,4 +18,6 @@ add_executable(MiniFB main.c
         src/mmu.c
         headers/math.h
         src/math.c
+        headers/time.h
+        src/time.c
 )
