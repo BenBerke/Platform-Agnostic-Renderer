@@ -7,6 +7,7 @@
 #include "../globals.h"
 #include "../headers/math.h"
 #include "../headers/mmu.h"
+#include "../headers/renderer_helpers.h"
 
 #ifdef _WIN32
 BOOL CALLBACK GetThreadWindowsCallBack(HWND hwnd, LPARAM lParam) {
@@ -175,4 +176,37 @@ void r_draw_texture_scaled_raw(const u32* texture, const u32 w, const u32 h, con
 
 void r_draw_texture_scaled(const Texture* texture, const int x, const int y, const float scale) {
     r_draw_texture_scaled_raw(texture->data, texture->w, texture->h, x, y, scale);
+}
+
+void r_draw_fill_triangle(const int x1, const int y1, const int x2, const int y2, const int x3, const int y3) {
+    const int left_x = MIN(MIN(x1, x2), x3);
+    const int right_x = MAX(MAX(x1, x2), x3);
+    const int left_y = MIN(MIN(y1, y2), y3);
+    const int right_y = MAX(MAX(y1, y2), y3);
+
+    for (int i = left_x; i <= right_x; i++)
+        for (int j = left_y; j <= right_y; j++) {
+            if (!helper_r_point_in_triangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3, (float)i, (float)j)) continue;
+            r_set_pixel(i, j);
+        }
+}
+
+void r_draw_texture_triangle(
+    const int x1, const int y1, const float u1, const float v1,
+    const int x2, const int y2, const float u2, const float v2,
+    const int x3, const int y3, const float u3, const float v3,
+    const Texture* texture) {
+
+    const int left_x = MIN(MIN(x1, x2), x3);
+    const int right_x = MAX(MAX(x1, x2), x3);
+    const int left_y = MIN(MIN(y1, y2), y3);
+    const int right_y = MAX(MAX(y1, y2), y3);
+
+    for (int i = left_x; i <= right_x; i++)
+        for (int j = left_y; j <= right_y; j++) {
+            if (!helper_r_point_in_triangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3, (float)i, (float)j)) continue;
+            const Color color = helper_r_get_texture_pixel(x1, y1, u1, v1, x2, y2, u2, v2, x3, y3, u3, v3, i, j, texture);
+            r_set_draw_color_int(color);
+            r_set_pixel(i, j);
+        }
 }

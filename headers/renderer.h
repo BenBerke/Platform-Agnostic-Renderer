@@ -51,5 +51,11 @@ void r_draw_horizontal_line(int x, int x1, int y);
 void r_draw_fill_rect(int x, int y, int w, int h);
 void r_draw_fill_circle(int x, int y, int half_r);
 void r_draw_texture_scaled(const Texture* texture, int x, int y, float scale);
+void r_draw_fill_triangle(int x1, int y1, int x2, int y2, int x3, int y3);
+void r_draw_texture_triangle(
+    int x1, int y1, float u1, float v1,
+    int x2, int y2, float u2, float v2,
+    int x3, int y3, float u3, float v3,
+    const Texture* texture);
 
 #endif //MINIFB_RENDERER_H

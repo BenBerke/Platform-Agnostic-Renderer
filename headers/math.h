@@ -5,6 +5,10 @@
 #ifndef MINIFB_MATH_H
 #define MINIFB_MATH_H
 
+#define MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define MAX(a,b) (((a) > (b)) ? (a) : (b))
+#define FLOOR(a) ((float)((int)(a) - ((a) < (int)(a))))
+
 static double inline sqrt(double x);
 static float fast_sqrt(float x);
 

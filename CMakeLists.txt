@@ -23,6 +23,7 @@ add_executable(MiniFB main.c
         src/decoder.c
         headers/decoder.h
         headers/typedefs.h
+        headers/renderer_helpers.h
 )
 
 #target_compile_options(MiniFB PRIVATE -03)

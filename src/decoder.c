@@ -219,11 +219,11 @@ static u8* inflate_zlib(const u8 *in, usize in_size, usize expected_size, usize 
 
     int bfinal = 0;
     while (!bfinal) {
-        g_print("block start byte = %l, bit=%d, out=%l, cap = %l\n", (u64)bs.byte_idx, bs.bit_idx, len, cap);
+        // g_print("block start byte = %l, bit=%d, out=%l, cap = %l\n", (u64)bs.byte_idx, bs.bit_idx, len, cap);
         bfinal = read_bits(&bs, 1);
         int btype = read_bits(&bs, 2);
 
-        g_print("block header: final=%d, type %d\n", bfinal, btype);
+        // g_print("block header: final=%d, type %d\n", bfinal, btype);
 
         if (bs.failed) {
             g_print("block header failed to read");
@@ -318,7 +318,7 @@ static u8* inflate_zlib(const u8 *in, usize in_size, usize expected_size, usize 
                 }
             }
 
-            g_print("Dynamic tree decoded idx %d total %d byte %l bit %d\n", idx, num_total, (u64)bs.byte_idx, bs.bit_idx);
+           //  g_print("Dynamic tree decoded idx %d total %d byte %l bit %d\n", idx, num_total, (u64)bs.byte_idx, bs.bit_idx);
 
             HuffmanTree lt, dt;
             build_huffman(&lt, combined, hlit);
@@ -415,7 +415,7 @@ Texture png_to_bitstream(const char* filepath) {
     const isize stride = (isize)width * bpp;
     const isize expected_size = (isize)height * (1 + stride);
 
-    g_print("PNG: width=%d, height=%d, bpp=%d, expected = %l\n", width, height, bpp, expected_size);
+    // g_print("PNG: width=%d, height=%d, bpp=%d, expected = %l\n", width, height, bpp, expected_size);
 
     usize raw_size = 0;
     u8 *raw_data = inflate_zlib(idat_buf, idat_size, expected_size, &raw_size);
