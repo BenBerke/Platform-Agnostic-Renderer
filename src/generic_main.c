@@ -5,56 +5,37 @@
 #include "../headers/input_manager.h"
 #include "../headers/debug.h"
 #include "../headers/time.h"
+#include "../headers/decoder.h"
 
 void generic_main() {
-    r_g_init_window(960, 800, "Hello world");
+    r_g_init_window(W_W, W_H, "I love you");
     im_init();
 
-    float x = 0, r = 30;
-    float y = W_H-r;
-
-    float velocity_y = 0;
-    float jump_impulse = 15.0f;
-    float gravity = .03f;
-    float speed = 30.0f;
-
-    unsigned long long last_time = g_get_time_tick();
-    double dt = 0;
+    int w = 0, h = 0;
+    const u32* pic_buffer = png_to_bitstream("C:/Users/berke/Pictures/Screenshots/Screenshot 2026-08-01 224134.png", &w, &h);
+    if (!pic_buffer) {
+        g_print("Picture couldn't work");
+        return;
+    }
 
     bool running = true;
     while (running) {
-        unsigned long long cur_time = g_get_time_tick();
-        dt = (double)(cur_time - last_time) / 1000000.0;
-        last_time = cur_time;
-
         im_begin();
 
         running = r_g_poll_events();
 
-        if (im_key_get(KC_A)) x -= speed * dt;
-        if (im_key_get(KC_D)) x += speed * dt;
-
-        bool is_grounded = (y >= W_H - r);
-        if (im_key_get_down(KC_SPACE) && is_grounded) velocity_y = -jump_impulse;
-
-        if (!is_grounded) velocity_y += gravity;
-
-        y += velocity_y * dt;
-
-        if (y >= W_H - r) {
-            y = W_H - r;
-            velocity_y = 0.0f;
-        }
-        if (y <= 0) {
-            y = 0;
-            velocity_y = 0.0f;
-        }
-
         r_set_draw_color(255, 255, 255);
         r_clear_window();
 
-        r_set_draw_color(0, 0, 0);
-        r_draw_fill_circle((int)x, (int)y, (int)r);
+        for (int ay = 0; ay < h; ay++) {
+            for (int ax = 0; ax < w; ax++) {
+                u8 ar, ag, ab;
+                r_int_to_rgb(*(pic_buffer + ax + ay * w), &ar, &ag, &ab);
+
+                r_set_draw_color(ar, ag, ab);
+                r_set_pixel(ax, ay);
+            }
+        }
 
         r_g_update_window();
     }

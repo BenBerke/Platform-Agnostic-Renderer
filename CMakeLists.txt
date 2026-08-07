@@ -20,4 +20,9 @@ add_executable(MiniFB main.c
         src/math.c
         headers/time.h
         src/time.c
+        src/decoder.c
+        headers/decoder.h
+        headers/typedefs.h
 )
+
+#target_compile_options(MiniFB PRIVATE -03)

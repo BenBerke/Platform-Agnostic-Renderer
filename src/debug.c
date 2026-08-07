@@ -5,7 +5,7 @@
 #include "../app.h"
 #include "../headers/debug.h"
 
-void generic_print(const char* text, ...) {
+void g_print(const char* text, ...) {
     va_list args;
     va_start(args, text);
 
@@ -25,6 +25,13 @@ void generic_print(const char* text, ...) {
                 int j = 0;
                 while (num_buffer[j] != '\0' && buffer_stack < sizeof(buffer)-1) buffer[buffer_stack++] = num_buffer[j++];
             }
+            else if (text[i] == 'l') {
+                char num_buffer[65];
+                itoa(va_arg(args, int), num_buffer, 16);
+
+                int j = 0;
+                while (num_buffer[j] != '\0' && buffer_stack < sizeof(buffer)-1) buffer[buffer_stack++] = num_buffer[j++];
+            }
             else if (text[i] == '%') buffer[buffer_stack++] = '%';
 
             i++;
@@ -35,7 +42,7 @@ void generic_print(const char* text, ...) {
     va_end(args);
 
 #ifdef _WIN32
-    const HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     DWORD bytesWritten;
 
     WriteFile(hStdOut, buffer, (DWORD)buffer_stack, &bytesWritten, NULL);

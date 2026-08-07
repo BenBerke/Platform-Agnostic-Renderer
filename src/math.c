@@ -8,7 +8,7 @@ float fast_sqrt(float x) {
     if (x < 0.0f) return 0.0f;
 
     int i = 0;
-    float x_half = x * .5f;
+    const float x_half = x * .5f;
 
     i = *(int*)&x;
     i = 0x5F3759DF - (i >> 1);
@@ -20,7 +20,7 @@ float fast_sqrt(float x) {
     return x * x;
 }
 
-double inline sqrt(double x) {
+double inline sqrt(const double x) {
     if (x < 0.0) return 0.0;
     if (x == 0.0 || x == 1.0) return x;
 

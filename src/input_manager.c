@@ -14,9 +14,11 @@ void im_init() {  //                                       mouse x, y
     SIZE_T total_size = sizeof(bool) * (IM_KEY_COUNT * 2) + 8;
 
     im_memory = g_malloc(total_size);
+
+    g_memset(im_memory, 0, total_size);
 }
 void im_begin() {
-    g_copy_mem(IM_LAST_KEYS_PTR, IM_KEYS_PTR, sizeof(bool) * IM_KEY_COUNT);
+    g_memcpy(IM_LAST_KEYS_PTR, IM_KEYS_PTR, sizeof(bool) * IM_KEY_COUNT);
 }
 
 bool im_key_get(const enum KEYCODES keycode) { return (IM_CURRENT);}
@@ -68,7 +70,11 @@ LRESULT CALLBACK WindowProc(const HWND hWnd, const UINT uMsg, const WPARAM wPara
             bmi.bmiHeader.biHeight = -W_H;
             bmi.bmiHeader.biPlanes = 1;
             bmi.bmiHeader.biBitCount = 32;
-            bmi.bmiHeader.biCompression = BI_RGB;
+            bmi.bmiHeader.biCompression = BI_BITFIELDS;
+
+            ((DWORD*)bmi.bmiColors)[0] = 0xFF000000;
+            ((DWORD*)bmi.bmiColors)[1] = 0x00FF0000;
+            ((DWORD*)bmi.bmiColors)[2] = 0x0000FF00;
 
             StretchDIBits(
                 hdc,

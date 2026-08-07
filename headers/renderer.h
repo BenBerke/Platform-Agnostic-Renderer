@@ -10,17 +10,17 @@
 static int draw_color;
 
 // r at the highest 8, b at the lowest 8
-static inline int rgb_to_int(const unsigned char r, const unsigned char g, const unsigned char b) {return (r << 16) | (g << 8) | b;}
+static inline int r_rgb_to_int(const unsigned char r, const unsigned char g, const unsigned char b) {return (r << 24) | (g << 16) | (b << 8);}
 
-static inline void int_to_rgb(const unsigned int i, unsigned char* r, unsigned char* g, unsigned char* b) {
-    *r = (i & 0x00FF0000) >> 16;
-    *g = (i & 0x0000FF00) >> 8;
-    *b = (i & 0x000000FF);
+static inline void r_int_to_rgb(const unsigned int i, unsigned char* r, unsigned char* g, unsigned char* b) {
+    *r = (i & 0xFF000000) >> 24;
+    *g = (i & 0x00FF0000) >> 16;
+    *b = (i & 0x0000FF00) >> 8;
 }
 static inline int cord_to_index(const int x, const int y) {return x + y * W_W;}
 
 static inline void r_set_draw_color(const unsigned char r, const unsigned char g, const unsigned char b) {
-    draw_color = rgb_to_int(r, g, b);
+    draw_color = r_rgb_to_int(r, g, b);
 }
 static inline void r_set_draw_color_int(const int color) {
     draw_color = color;
