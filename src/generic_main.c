@@ -11,9 +11,8 @@ void generic_main() {
     r_g_init_window(W_W, W_H, "I love you");
     im_init();
 
-    int w = 0, h = 0;
-    const u32* pic_buffer = png_to_bitstream("C:/Users/berke/Pictures/Screenshots/Screenshot 2026-08-01 224134.png", &w, &h);
-    if (!pic_buffer) {
+    const Texture pic_buffer = png_to_bitstream("C:/Users/berke/Pictures/Screenshots/Screenshot 2026-08-01 224134.png");
+    if (!pic_buffer.data) {
         g_print("Picture couldn't work");
         return;
     }
@@ -27,15 +26,7 @@ void generic_main() {
         r_set_draw_color(255, 255, 255);
         r_clear_window();
 
-        for (int ay = 0; ay < h; ay++) {
-            for (int ax = 0; ax < w; ax++) {
-                u8 ar, ag, ab;
-                r_int_to_rgb(*(pic_buffer + ax + ay * w), &ar, &ag, &ab);
-
-                r_set_draw_color(ar, ag, ab);
-                r_set_pixel(ax, ay);
-            }
-        }
+        r_draw_texture_scaled(&pic_buffer, 100, 100, 1.3f);
 
         r_g_update_window();
     }

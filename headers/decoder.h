@@ -5,8 +5,8 @@
 #ifndef MINIFB_DECODER_H
 #define MINIFB_DECODER_H
 
-#include "../headers/typedefs.h"
+#include "../globals.h"
 
-u32* png_to_bitstream(const char* filepath, int* out_width, int* out_height);
+Texture png_to_bitstream(const char* filepath);
 
 #endif //MINIFB_DECODER_H

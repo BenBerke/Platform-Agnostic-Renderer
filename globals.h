@@ -7,6 +7,7 @@
 // Holds information that is generally required by majority of the files
 
 #include "app.h"
+#include "headers/typedefs.h"
 
 #define W_W 960
 #define W_H 960
@@ -66,5 +67,10 @@ enum KEYCODES {
     KC_ESC = 27,
     KC_SPACE = ' ',
 };
+
+typedef struct Texture {
+    u32 *data;
+    u32 w, h;
+} Texture;
 
 #endif //MINIFB_CONFIG_H

@@ -354,14 +354,19 @@ static u32 read_u32_be(const u8 *p) {
     return ((u32)p[0] << 24) | ((u32)p[1] << 16) | ((u32)p[2] << 8) | ((u32)p[3]);
 }
 
-u32* png_to_bitstream(const char* filepath, int* out_width, int* out_height) {
+Texture png_to_bitstream(const char* filepath) {
+    Texture ret_texture = {
+        .data = NULL,
+        .w = -1,
+        .h = -1,
+    };
     char* file_data = NULL;
     u64 fsize = 0;
 
-    if (!g_read_file(filepath, &file_data, &fsize)) return NULL;
+    if (!g_read_file(filepath, &file_data, &fsize)) return ret_texture;
 
     static const u8 PNG_SIG[8] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
-    if (fsize < 8 || g_memcmp(file_data, PNG_SIG, 8) != 0) { g_free(file_data); return NULL;}
+    if (fsize < 8 || g_memcmp(file_data, PNG_SIG, 8) != 0) { g_free(file_data); return ret_texture; }
 
     usize pos = 8;
     u32 width = 0, height = 0;
@@ -387,7 +392,7 @@ u32* png_to_bitstream(const char* filepath, int* out_width, int* out_height) {
             if (bit_depth != 8 || (color_type != 2 && color_type != 6) || data[12] != 0) {
                 g_free(idat_buf);
                 g_free(file_data);
-                return NULL;
+                return ret_texture;
             }
         }
         else if (g_memcmp(type, "IDAT", 4) == 0) {
@@ -404,7 +409,7 @@ u32* png_to_bitstream(const char* filepath, int* out_width, int* out_height) {
     }
 
     g_free(file_data);
-    if (!idat_buf) return NULL;
+    if (!idat_buf) return ret_texture;
 
     const int bpp = (color_type == 6) ? 4 : 3;
     const isize stride = (isize)width * bpp;
@@ -416,11 +421,11 @@ u32* png_to_bitstream(const char* filepath, int* out_width, int* out_height) {
     u8 *raw_data = inflate_zlib(idat_buf, idat_size, expected_size, &raw_size);
     g_free(idat_buf);
 
-    if (!raw_data) return NULL;
+    if (!raw_data) return ret_texture;
 
     if (raw_size < expected_size) {
         g_free(raw_data);
-        return NULL;
+        return ret_texture;
     }
 
     u8 *recon = (u8*)g_malloc(height * stride);
@@ -452,7 +457,7 @@ u32* png_to_bitstream(const char* filepath, int* out_width, int* out_height) {
                     g_print("INVALID PNG FILTER filter=%d, row=%d, offset=%l\n", filter_type, y, (u64)y * (1 + stride));
                     g_free(recon);
                     g_free(raw_data);
-                    return NULL;
+                    return ret_texture;
                     break;
             }
         }
@@ -477,8 +482,9 @@ u32* png_to_bitstream(const char* filepath, int* out_width, int* out_height) {
 
     g_free(recon);
 
-    if (out_width) *out_width = width;
-    if (out_height) *out_height = height;
+    ret_texture.data = pixels;
+    ret_texture.w = width;
+    ret_texture.h = height;
 
-    return pixels;
+    return ret_texture;
 }

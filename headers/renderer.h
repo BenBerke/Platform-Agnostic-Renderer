@@ -6,6 +6,7 @@
 #define MINIFB_RENDERER_H
 
 #include "../globals.h"
+#include "../headers/typedefs.h"
 
 static int draw_color;
 
@@ -49,5 +50,6 @@ void r_draw_line(int x, int y, int x1, int y1);
 void r_draw_horizontal_line(int x, int x1, int y);
 void r_draw_fill_rect(int x, int y, int w, int h);
 void r_draw_fill_circle(int x, int y, int half_r);
+void r_draw_texture_scaled(const Texture* texture, int x, int y, float scale);
 
 #endif //MINIFB_RENDERER_H
