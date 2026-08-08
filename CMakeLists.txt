@@ -16,7 +16,7 @@ add_executable(MiniFB main.c
         src/generic_main.c
         headers/mmu.h
         src/mmu.c
-        headers/math.h
+        headers/math/math.h
         src/math.c
         headers/time.h
         src/time.c
@@ -24,6 +24,9 @@ add_executable(MiniFB main.c
         headers/decoder.h
         headers/typedefs.h
         headers/renderer_helpers.h
+        headers/math/vector3.h
+        headers/math/matrix3.h
+        src/vector3.c
 )
 
 #target_compile_options(MiniFB PRIVATE -03)

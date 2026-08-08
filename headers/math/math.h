@@ -9,11 +9,11 @@
 #define MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define FLOOR(a) ((float)((int)(a) - ((a) < (int)(a))))
 
-static double inline sqrt(double x);
-static float fast_sqrt(float x);
+static double m_sqrt(double x);
+static float m_sqrt_fast(float x);
 
-float distance_sqr(int x, int y, int x1, int y1);
-float distance_fast(int x, int y, int x1, int y1);
-float distance(int x, int y, int x1, int y1);
+float m_distance_sqr(int x, int y, int x1, int y1);
+float m_distance_fast(int x, int y, int x1, int y1);
+float m_distance(int x, int y, int x1, int y1);
 
 #endif //MINIFB_MATH_H

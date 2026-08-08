@@ -40,7 +40,6 @@ LRESULT CALLBACK WindowProc(const HWND hWnd, const UINT uMsg, const WPARAM wPara
         case WM_LBUTTONDOWN: {
             unsigned int x = LOWORD(lParam);
             unsigned int y = HIWORD(lParam);
-
             break;
         }
         case WM_KEYDOWN: {

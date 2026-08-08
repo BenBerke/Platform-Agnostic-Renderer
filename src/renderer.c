@@ -5,7 +5,7 @@
 #include "../headers/renderer.h"
 
 #include "../globals.h"
-#include "../headers/math.h"
+#include "../headers/math/math.h"
 #include "../headers/mmu.h"
 #include "../headers/renderer_helpers.h"
 
@@ -153,7 +153,7 @@ void r_draw_fill_circle(const int x, const int y, const int half_r) {
 
     for (int i = left_x; i <= right_x; i++)
         for (int j = top_y; j <= bottom_y; j++)
-            if (distance_sqr(i, j, x, y) < half_r*half_r) r_set_pixel(i, j);
+            if (m_distance_sqr(i, j, x, y) < half_r*half_r) r_set_pixel(i, j);
 }
 
 void r_draw_texture_scaled_raw(const u32* texture, const u32 w, const u32 h, const int x, const int y, const float scale) {

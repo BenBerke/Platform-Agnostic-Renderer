@@ -27,6 +27,7 @@ void generic_main() {
         r_clear_window();
 
         r_set_draw_color(0, 0, 0);
+
         r_draw_texture_triangle(
             0, 0, 0, 0, 0,
             pb.h, 0.0f, 1.0f,
